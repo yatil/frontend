@@ -26,11 +26,17 @@ object NginxLog extends Logging {
   }
 
   object airbrake {
-  
-    def apply(namespace:Option[String], queryString:Map[String, String]) {
+
+    def apply(namespace:Option[String], queryString:Map[String, String], userAgent:String) {
+      
+      val ua = agent.parse(userAgent)
+      val os = ua.getOperatingSystem
+      
+      val env = s"${os.getFamilyName} ${ua.getFamily} ${ua.getVersionNumber.getMajor}"
+
       try {
         val lineno = if (queryString("lineno") matches """\d+""") queryString("lineno").toInt else 0
-        AirBrake.send(namespace.getOrElse("unknown"), queryString("js/message"), queryString("filename"), lineno).map { response =>
+        AirBrake.send(namespace.getOrElse("unknown"), queryString("js/message"), queryString("filename"), lineno, "", env).map { response =>
             log info s"Airbrake response: ${response.body}"
           }
       } catch {
@@ -47,6 +53,8 @@ object NginxLog extends Logging {
 
     def apply() {
       total.recordCount(1)
+      CloudWatch.put("Diagnostics", total)
+      log.info(s"*** ${total.count}")
     }
   }
 
@@ -132,7 +140,7 @@ object NginxLog extends Logging {
         namespace.getOrElse("unknown") match {
           case "js" => {
             js(userAgent)
-            airbrake(namespace, queryString)
+            //airbrake(namespace, queryString, userAgent)
           }
           case "ads" => ads()
           case _ => null

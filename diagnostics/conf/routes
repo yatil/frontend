@@ -6,3 +6,4 @@
 GET     /           controllers.Application.front
 
 GET     /error      controllers.ErrorController.test
+GET     /cw         controllers.ErrorController.cw

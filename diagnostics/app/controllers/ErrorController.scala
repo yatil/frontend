@@ -6,7 +6,7 @@ import play.api.mvc.{ Content => _, _ }
 import play.api.libs.iteratee.Enumerator
 import play.api.Play.current
 import play.api.libs.concurrent.Execution.Implicits._
-import model.diagnostics._ 
+import model.diagnostics._
 
 object ErrorController extends Controller with Logging {
  
@@ -14,6 +14,10 @@ object ErrorController extends Controller with Logging {
   def test = Action { implicit request =>
     Ok("ok")
   } 
+
+  def cw = Action { implicit request => 
+    Ok("ok")
+  }
 
   // sends a sample message to Airbrake 
   def report = Action.async { implicit request =>

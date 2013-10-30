@@ -9,14 +9,22 @@ import scala.concurrent.{Future}
 
 object AirBrake extends Logging {
 
-  def send(category: String, message: String, file: String = "undefined", lineno: Integer = 0, backtrace: String = "undefined") = {
+  def send( category: String, 
+            message: String, 
+            file: String = "undefined", 
+            lineno: Integer = 0, 
+            backtrace: String = "undefined",
+            os: String = "undefined",
+            build: String = "0"
+            ) = {
 
     val url = Configuration.airbrake.url 
     val apiKey = Configuration.airbrake.apiKey
 
     val body = s"""{ "notifier": { "name": "gu.diagnostics", "version": "0.1", "url": "http://theguardian.com" },
                     "errors": [ { "type": "${category}", "message": "${message}", "backtrace": [ 
-                      { "file": "${file}", "line": ${lineno}, "function": "${backtrace}" } ] } ]}""" 
+                      { "file": "${file}", "line": ${lineno}, "function": "${backtrace}" } ] } ],
+                   "context": { "os": "${os}", "environment": "production", "version": "${build}" } }""" 
     
     log info s"Calling: ${url} with ${body}" 
 
