@@ -58,8 +58,8 @@ object Analytics extends implicits.Dates with implicits.Tuples with implicits.St
     val data = S3.get(s"${Configuration.environment.stage.toUpperCase}/analytics/pageviews-by-operating-system.csv")
     val lines = data.toList flatMap { _.split("\n") }
 
-    val parsed: List[(String, String, String, Long)] = lines map { CSV.parse } collect {
-      case List(operatingSystemAndVersion, month, year, total) => (operatingSystemAndVersion, month, year, total.toLong)
+    val parsed: List[(String, Long)] = lines map { CSV.parse } collect {
+      case List(operatingSystemAndVersion, total) => (operatingSystemAndVersion, total.toLong)
     }
 
     parsed.toMap
@@ -69,8 +69,8 @@ object Analytics extends implicits.Dates with implicits.Tuples with implicits.St
     val data = S3.get(s"${Configuration.environment.stage.toUpperCase}/analytics/pageviews-by-browser.csv")
     val lines = data.toList flatMap { _.split("\n") }
 
-    val parsed: List[(String, String, String, Long)] = lines map { CSV.parse } collect {
-      case List(browserAndVersion, month, year, total) => (browserAndVersion, month, year, total.toLong)
+    val parsed: List[(String, Long)] = lines map { CSV.parse } collect {
+      case List(browserAndVersion, total) => (browserAndVersion, total.toLong)
     }
 
     parsed.toMap
@@ -80,8 +80,8 @@ object Analytics extends implicits.Dates with implicits.Tuples with implicits.St
     val data = S3.get(s"${Configuration.environment.stage.toUpperCase}/analytics/pageviews-by-operating-system-and-browser.csv")
     val lines = data.toList flatMap { _.split("\n") }
 
-    val parsed: List[(String, String, String, Long)] = lines map { CSV.parse } collect {
-      case List(operatingSystemAndBrowserAndVersion, month, year, total) => (operatingSystemAndBrowserAndVersion, month, year, total.toLong)
+    val parsed: List[(String, Long)] = lines map { CSV.parse } collect {
+      case List(operatingSystemAndBrowserAndVersion, total) => (operatingSystemAndBrowserAndVersion, total.toLong)
     }
 
     parsed.toMap
