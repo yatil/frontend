@@ -42,6 +42,8 @@
                 makeDropabble: true,
                 css: {underDrag: underDrag},
                 template: {name: 'template_article', foreach: articles}"></div>
+            <a data-bind="
+                click: createItem">Create item</a>
         </div>
 
         <div data-bind="with: latestArticles">

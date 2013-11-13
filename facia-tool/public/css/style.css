@@ -212,7 +212,7 @@ h1 span {
     display: none !important;
 }
 
-.web-title:hover .web-title--editor {
+.trail:hover .web-title--editor {
     opacity: 0.5;
     display: inline-block;
 }

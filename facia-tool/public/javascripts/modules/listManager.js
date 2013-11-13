@@ -39,6 +39,10 @@ define([
                     articles: ko.observableArray(),
                     underDrag: ko.observable(),
                     callback: updateLayout,
+                    createItem: function() {
+                        model.clipboard.articles.push(new Article({}));
+                        updateLayout();
+                    }, 
                     dropItem: function(item) {
                         model.clipboard.articles.remove(item);
                         updateLayout();
