@@ -52,7 +52,7 @@ define(['$',
 
                 bean.on(context, 'click', self.selector + ' a', function(e) {
                     e.preventDefault();
-                    var galleryUrl = e.currentTarget.getAttribute('href');
+                    var galleryUrl = self.makeAjaxUrl(e.currentTarget.getAttribute('href'));
 
                     // Go to a specific image if it's in the query string. eg: index=3
                     if (galleryUrl.indexOf('index=') !== -1) {
@@ -61,7 +61,6 @@ define(['$',
                         });
                         currentImage = parseInt(urlParams.index, 10);
                     }
-
 
                     self.loadGallery({
                         url: galleryUrl
@@ -183,6 +182,10 @@ define(['$',
                     mediator.emit('module:clickstream:interaction', 'Lightbox Gallery - Back button exit');
                 }
             });
+        };
+
+        this.makeAjaxUrl = function(url) {
+            return (url.match('^https?://')) ? '/' + url.split('/').slice(3).join('/') : url;
         };
 
         this.handleKeyEvents = function(e) {
