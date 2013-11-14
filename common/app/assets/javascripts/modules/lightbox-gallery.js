@@ -75,7 +75,7 @@ define(['$',
 
                 // Load gallery straight away if url contains a direct image link
                 var urlParams = url.getUrlVars();
-                if (urlParams.index) {
+                if (config.page.contentType === "Gallery" && urlParams.index) {
                     this.loadGallery({
                         url: '/' + config.page.pageId,
                         startingImage: parseInt(urlParams.index, 10)
