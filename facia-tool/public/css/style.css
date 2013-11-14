@@ -183,6 +183,7 @@ h1 span {
     width: 75px;
     height: 45px;
     margin: 3px 0 0 0;
+    background-image: url(/assets/images/75x45.png);
     background-color: #EEEEEE;
     border-radius: 3px;
 }

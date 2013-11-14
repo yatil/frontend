@@ -42,8 +42,10 @@
                 makeDropabble: true,
                 css: {underDrag: underDrag},
                 template: {name: 'template_article', foreach: articles}"></div>
-            <a data-bind="
-                click: createItem">Create item</a>
+            <div class="finder__controls">
+                <a data-bind="
+                click: createSnap">Snap</a>
+            </div>
         </div>
 
         <div data-bind="with: latestArticles">
@@ -181,10 +183,10 @@
             }">
 
             <a target="article" data-bind="attr: {href: 'http://www.theguardian.com/' + props.id()}">
-                <img data-bind="attr: {src: fields.thumbnail}" draggable="false" />
+                <img data-bind="attr: {src: fields.thumbnail()}" draggable="false" />
             </a>
 
-            <div data-bind="visible: !state.editingTitle()">
+            <div data-bind="visible: !state.isEditing()">
                 <div class="trail__remove" data-bind="click: $parent.dropItem">
                     <i class="icon-trash icon-white"></i>
                 </div>
@@ -199,16 +201,17 @@
                 </div>
             </div>
 
-            <!-- ko if: state.editingTitle -->
+            <!-- ko if: state.isEditing -->
             <div class="trail_tweaks u-cf">
                 <input type="text" data-bind="
+                    hasfocus: true,
                     value: headlineInput,
                     attr: {placeholder: fields.headline}"/>
                 <div>
-                    <a data-bind="click: saveTitleEdit">Save Title</a>
-                    <a data-bind="click: cancelTitleEdit">Cancel</a>
+                    <a data-bind="click: saveEdit">Save</a>
+                    <a data-bind="click: cancelEdit">Cancel</a>
                     <a data-bind="
-                        click: revertTitleEdit,
+                        click: revertEdit,
                         attr: {title: fields.headline},
                         visible: meta.headline">Revert</a>
                 </div>
@@ -216,7 +219,7 @@
             <!-- /ko -->
 
             <div class="web-title" data-bind="
-                    visible: !state.editingTitle()">
+                    visible: !state.isEditing()">
 
                 <a target="article" data-bind="
                     click: function() { return false; },
@@ -224,7 +227,7 @@
                     text: meta.headline() || fields.headline()"></a>
 
                 <i class="web-title--editable icon-pencil" data-bind="
-                    click: startTitleEdit,
+                    click: startEdit,
                     css: {'web-title--editor': !meta.headline(), 'web-title--edited': meta.headline}"></i>
             </div>
 

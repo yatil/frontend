@@ -15,6 +15,8 @@ function (
         if(data) {
             populate(data, item);
             defer.resolve();
+        } else if (item.props.id().match(/^snap:/)) {
+            defer.resolve();            
         } else {
             fetchData([item.props.id()])
             .done(function(result){

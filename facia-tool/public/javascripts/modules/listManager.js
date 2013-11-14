@@ -39,8 +39,10 @@ define([
                     articles: ko.observableArray(),
                     underDrag: ko.observable(),
                     callback: updateLayout,
-                    createItem: function() {
-                        model.clipboard.articles.push(new Article({}));
+                    createSnap: function() {
+                        var stub = new Article({id: 'snap:' + new Date().getTime()});
+                        stub.startEdit();
+                        model.clipboard.articles.push(stub);
                         updateLayout();
                     }, 
                     dropItem: function(item) {

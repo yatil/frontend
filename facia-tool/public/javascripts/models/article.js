@@ -33,7 +33,7 @@ function (
 
         this.state = common.util.asObservableProps([
             'underDrag',
-            'editingTitle',
+            'isEditing',
             'shares',
             'comments',
             'totalHits',
@@ -69,26 +69,26 @@ function (
         common.util.populateObservables(this.fields, opts.fields);
     };
 
-    Article.prototype.startTitleEdit = function() {
+    Article.prototype.startEdit = function() {
         this.provisionalHeadline = this.meta.headline();
-        this.state.editingTitle(true);
+        this.state.isEditing(true);
     };
 
-    Article.prototype.saveTitleEdit = function() {
+    Article.prototype.saveEdit = function() {
         if(this.meta.headline()) {
             this.save();
         };
-        this.state.editingTitle(false);
+        this.state.isEditing(false);
     };
 
-    Article.prototype.cancelTitleEdit = function() {
+    Article.prototype.cancelEdit = function() {
         this.meta.headline(this.provisionalHeadline);
-        this.state.editingTitle(false);
+        this.state.isEditing(false);
     };
 
-    Article.prototype.revertTitleEdit = function() {
+    Article.prototype.revertEdit = function() {
         this.meta.headline(undefined);
-        this.state.editingTitle(false);
+        this.state.isEditing(false);
         this.save();
     };
 
