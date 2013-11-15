@@ -21,8 +21,8 @@ object FaciaToolController extends Controller with Logging with ExecutionContext
     Redirect("/")
   }
   
-  def history() = ExpiringAuthentication { request =>
-    Ok(Json.toJson(S3FrontsApi.listHistory(20)))
+  def history(path: String) = ExpiringAuthentication { request =>
+    Ok(Json.toJson(S3FrontsApi.listHistory(path, 20)))
   }
 
   def listCollections = AjaxExpiringAuthentication { request =>

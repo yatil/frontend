@@ -107,9 +107,9 @@ object S3FrontsApi extends S3 {
   def getBlock(id: String) = get(s"${location}/collection/${id}/collection.json")
   def listConfigsIds: List[String] = getConfigIds(s"$location/config/")
   def listCollectionIds: List[String] = getCollectionIds(s"$location/collection/")
-  def listHistory(limit: Int): List[play.api.libs.json.JsValue] = {
+  def listHistory(path: String, limit: Int): List[play.api.libs.json.JsValue] = {
     import play.api.libs.json.Json
-    getObjects(s"$location/history/collection", limit).map { changeset => 
+    getObjects(s"$location/history/collection/${path}", limit).map { changeset => 
       Json.parse(get(changeset).getOrElse("{}"))
     } 
   }

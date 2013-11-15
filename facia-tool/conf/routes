@@ -32,5 +32,4 @@ GET           /ophan/pageviews/*path     controllers.FaciaOphanApiController.pag
 
 GET           /admin                     controllers.FaciaToolController.admin()
 
-GET           /history                   controllers.FaciaToolController.history()
-
+GET           /history/*path             controllers.FaciaToolController.history(path)
