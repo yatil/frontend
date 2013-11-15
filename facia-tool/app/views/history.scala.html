@@ -1,0 +1,13 @@
+@(env: String, history: List[String])
+
+@history
+
+@history.length
+
+Listing the last 100 actions in the fronts tool.
+
+<ul>
+    @history.map { log =>  
+        <li>@log</li>
+    }
+</ul>

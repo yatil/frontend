@@ -31,3 +31,6 @@ GET           /json/proxy/*absUrl        controllers.FaciaContentApiProxy.json(a
 GET           /ophan/pageviews/*path     controllers.FaciaOphanApiController.pageViews(path)
 
 GET           /admin                     controllers.FaciaToolController.admin()
+
+GET           /history                   controllers.FaciaToolController.history()
+

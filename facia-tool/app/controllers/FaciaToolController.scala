@@ -20,6 +20,11 @@ object FaciaToolController extends Controller with Logging with ExecutionContext
   def admin() = ExpiringAuthentication { request =>
     Redirect("/")
   }
+  
+  def history() = ExpiringAuthentication { request =>
+    val history = S3FrontsApi.listHistory
+    Ok(views.html.history(Configuration.environment.stage, history))
+  }
 
   def listCollections = AjaxExpiringAuthentication { request =>
     FaciaToolMetrics.ApiUsageCount.increment()
