@@ -131,6 +131,9 @@ object Switches extends Collections {
     "If this is switched on users will be messaged that they are inside the alpha/beta/whatever release",
     safeState = Off)
 
+  val RedactedSwitch = Switch("Feature Switches", "redacted",
+    "If this is switched on a redacted marketing message will appear under a specific URL",
+    safeState = On)
 
   val FontSwitch = Switch("Feature Switches", "web-fonts",
     "If this is switched on then the custom Guardian web font will load.",
@@ -305,7 +308,8 @@ object Switches extends Collections {
     ABCommercialComponents,
     EditionRedirectLoggingSwitch,
     ABStoryPackageQuestion,
-    ABInitialShowMore
+    ABInitialShowMore,
+    RedactedSwitch
   )
 
   val grouped: List[(String, Seq[Switch])] = all.toList stableGroupBy { _.group }

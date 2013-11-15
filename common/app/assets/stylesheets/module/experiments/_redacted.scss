@@ -1,0 +1,16 @@
+.redacted {
+    background-color: #000;
+    color: #fff;
+    padding: 20px;
+}
+
+.redacted:hover {
+    cursor: pointer;
+}
+
+.is-redacted .article__container p, .is-redacted .article__container a, .is-redacted h1, .is-redacted .article__standfirst {
+    background-color: #000;
+    color: #000;
+    margin-bottom: 20px;
+}
+

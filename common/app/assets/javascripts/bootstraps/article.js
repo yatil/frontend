@@ -1,5 +1,6 @@
 define([
     "common",
+    "bean",
     "modules/autoupdate",
     "modules/live-filter",
     "modules/live-summary",
@@ -13,6 +14,7 @@ define([
     "modules/experiments/left-hand-card"
 ], function (
     common,
+    bean,
     AutoUpdate,
     LiveFilter,
     LiveSummary,
@@ -124,6 +126,23 @@ define([
                 }
             });
         },
+        
+        displayRedactedMessage: function (config) {
+            var redactedMessage = {
+                    show: function () {
+                        common.$g('#article').addClass('is-redacted');
+                    },
+                    hide: function () {
+                        common.$g('#article').removeClass('is-redacted');
+                    }
+                };
+            if (config.switches && config.switches.redacted && config.page.pageId === 'politics/2013/sep/09/george-osborne-cost-living-labour') {
+                redactedMessage.show();
+                bean.on(document, 'click', '.js-redacted', function(e) {
+                    redactedMessage.hide();
+                });
+            }
+        },
 
         externalLinksCards: function () {
             common.mediator.on('page:article:ready', function(config, context) {
@@ -146,6 +165,7 @@ define([
             modules.initDiscussion();
             modules.initCricket();
             modules.externalLinksCards();
+            modules.displayRedactedMessage(config);
         }
         common.mediator.emit("page:article:ready", config, context);
     };

@@ -2,6 +2,13 @@
 @import conf.Switches._
 
 @defining((model.article, model.storyPackage)) { case (article, storyPackage) =>
+   
+    @if(RedactedSwitch.isSwitchedOn && (article.id == "politics/2013/sep/09/george-osborne-cost-living-labour")) {
+        <div class="redacted js-redacted">
+            Redacted.
+        </div>
+    }
+
     <h2 class="article-zone left-col-deport tone-@VisualTone(article) tone-accent-border">
         <span class="left-col-deport__body">
             <a class="tone-colour" data-link-name="article section" href="@LinkTo{/@article.section}">@Html(article.sectionName.toLowerCase)</a>
