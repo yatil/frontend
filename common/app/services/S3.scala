@@ -71,7 +71,7 @@ trait S3 extends Logging {
     client.shutdown()
   }
 
-  def getListing(prefix: String, dropText: String): List[String] = {
+  private def getListing(prefix: String, dropText: String): List[String] = {
     import scala.collection.JavaConversions._
     val summaries = client.listObjects(bucket, prefix).getObjectSummaries.toList
     summaries
