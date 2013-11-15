@@ -71,7 +71,7 @@ trait S3 extends Logging {
     client.shutdown()
   }
 
-  def getListing(prefix: String, dropText: String, take: Integer = 100): List[String] = {
+  def getListing(prefix: String, dropText: String): List[String] = {
     import scala.collection.JavaConversions._
     val summaries = client.listObjects(bucket, prefix).getObjectSummaries.toList
     summaries
@@ -81,12 +81,16 @@ trait S3 extends Logging {
       .filterNot(_.endsWith("/"))
       .map(_.split(dropText)
       .head
-      .take(take)
       )
   }
 
-  def getConfigIds(prefix: String): List[String] = getListing(prefix, "/config.json", 1)
-  def getCollectionIds(prefix: String): List[String] = getListing(prefix, "/collection.json", 200)
+  def getConfigIds(prefix: String): List[String] = getListing(prefix, "/config.json")
+  def getCollectionIds(prefix: String): List[String] = getListing(prefix, "/collection.json")
+  
+  def getObjects(prefix: String, limit: Int): List[String] = {
+    import scala.collection.JavaConversions._
+    client.listObjects(bucket, prefix).getObjectSummaries.toList.map(_.getKey).take(limit)
+  }
 }
 
 object S3 extends S3
@@ -103,8 +107,11 @@ object S3FrontsApi extends S3 {
   def getBlock(id: String) = get(s"${location}/collection/${id}/collection.json")
   def listConfigsIds: List[String] = getConfigIds(s"$location/config/")
   def listCollectionIds: List[String] = getCollectionIds(s"$location/collection/")
-  def listHistory: List[String] = {
-    getListing(s"$location/history/collection", ".json", 50)
+  def listHistory(limit: Int): List[play.api.libs.json.JsValue] = {
+    import play.api.libs.json.Json
+    getObjects(s"$location/history/collection", limit).map { changeset => 
+      Json.parse(get(changeset).getOrElse("{}"))
+    } 
   }
   def putBlock(id: String, json: String) =
     putPublic(s"${location}/collection/${id}/collection.json", json, "application/json")
