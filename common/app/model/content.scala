@@ -143,6 +143,19 @@ object Content {
   }
 }
 
+class Snap(s: String) extends Trail {
+
+  def webPublicationDate: DateTime = DateTime.now
+  def shortUrl: String = ""
+  def linkText: String = ""
+  def headline: String = s
+  def trailText: Option[String] = None
+  def section: String = ""
+  def sectionName: String = ""
+  def isLive: Boolean = true
+  def url: String = ""
+}
+
 class Article(content: ApiContent) extends Content(content) {
   lazy val body: String = delegate.safeFields.getOrElse("body","")
   lazy val contentType = "Article"

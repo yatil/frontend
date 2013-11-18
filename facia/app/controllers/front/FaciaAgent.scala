@@ -128,10 +128,19 @@ trait ParseCollection extends ExecutionContexts with Logging {
       val results = collectionItems.foldLeft(Future[List[Content]](Nil)){(foldList, collectionItem) =>
         val id = collectionItem.id
         val headline = collectionItem.headline
-        val response = ContentApi.item(id, edition).showFields("all").response
-        response.onFailure{case t: Throwable => log.warn("%s: %s".format(id, t.toString))}
-        for {l <- foldList; itemResponse <- response} yield {
-          itemResponse.content.map(Content(_, headline)).map(_ +: l).getOrElse(l)
+        id match {
+          case s if s.startsWith("snap:") => {
+            for {l <- foldList} yield {
+              headline map (new Snap(_)) map (_ +: l) getOrElse l
+            }
+          }
+          case s => {
+            val response = ContentApi.item(id, edition).showFields("all").response
+            response.onFailure{case t: Throwable => log.warn("%s: %s".format(id, t.toString))}
+            for {l <- foldList; itemResponse <- response} yield {
+              itemResponse.content.map(Content(_, headline)).map(_ +: l).getOrElse(l)
+            }
+          }
         }
       }
       val sorted = results map { _.sortBy(t => collectionItems.indexWhere(_.id == t.id))}
