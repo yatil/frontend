@@ -77,8 +77,8 @@ trait ParseCollection extends ExecutionContexts with Logging {
     } yield Collection(collectionList ++ contentApiList, displayName)
   }
 
-  def getCuratedList(response: Future[Response], edition: Edition, id: String, isWarmedUp: Boolean): Future[List[Content]] = {
-    val curatedList: Future[List[Content]] = parseResponse(response, edition, id)
+  def getCuratedList(response: Future[Response], edition: Edition, id: String, isWarmedUp: Boolean): Future[List[Trail]] = {
+    val curatedList: Future[List[Trail]] = parseResponse(response, edition, id)
     //Potential to fail the chain if we are warmed up
     if (isWarmedUp)
       curatedList
@@ -90,7 +90,7 @@ trait ParseCollection extends ExecutionContexts with Logging {
     (parse(r.body) \ "displayName").asOpt[String].filter(_.nonEmpty)
   }
 
-  private def parseResponse(response: Future[Response], edition: Edition, id: String): Future[List[Content]] = {
+  private def parseResponse(response: Future[Response], edition: Edition, id: String): Future[List[Trail]] = {
     response.flatMap { r =>
       r.status match {
         case 200 =>
@@ -120,18 +120,18 @@ trait ParseCollection extends ExecutionContexts with Logging {
     }
   }
 
-  def getArticles(collectionItems: Seq[CollectionItem], edition: Edition): Future[List[Content]] = {
+  def getArticles(collectionItems: Seq[CollectionItem], edition: Edition): Future[List[Trail]] = {
     if (collectionItems.isEmpty) {
       Future(Nil)
     }
     else {
-      val results = collectionItems.foldLeft(Future[List[Content]](Nil)){(foldList, collectionItem) =>
+      val results = collectionItems.foldLeft(Future[List[Trail with MetaData]](Nil)){(foldList, collectionItem) =>
         val id = collectionItem.id
         val headline = collectionItem.headline
         id match {
           case s if s.startsWith("snap:") => {
             for {l <- foldList} yield {
-              headline map (new Snap(_)) map (_ +: l) getOrElse l
+              headline map (new Snap(s, _)) map (_ +: l) getOrElse l
             }
           }
           case s => {
@@ -148,7 +148,7 @@ trait ParseCollection extends ExecutionContexts with Logging {
     }
   }
 
-  def executeContentApiQuery(s: Option[String], edition: Edition): Future[List[Content]] = s filter(_.nonEmpty) map { queryString =>
+  def executeContentApiQuery(s: Option[String], edition: Edition): Future[List[Trail]] = s filter(_.nonEmpty) map { queryString =>
     val queryParams: Map[String, String] = QueryParams.get(queryString).mapValues{_.mkString("")}
     val queryParamsWithEdition = queryParams + ("edition" -> queryParams.getOrElse("edition", Edition.defaultEdition.id))
 
