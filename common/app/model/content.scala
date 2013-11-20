@@ -143,17 +143,21 @@ object Content {
   }
 }
 
-class Snap(s: String) extends Trail {
+class Snap(snapId: String, s: String) extends Trail with MetaData {
 
   def webPublicationDate: DateTime = DateTime.now
   def shortUrl: String = ""
-  def linkText: String = ""
+  override def linkText: String = ""
   def headline: String = s
   def trailText: Option[String] = None
   def section: String = ""
   def sectionName: String = ""
   def isLive: Boolean = true
-  def url: String = ""
+  override def url: String = s
+
+  def id: String = snapId
+  def webTitle: String = ""
+  def analyticsName: String = ""
 }
 
 class Article(content: ApiContent) extends Content(content) {
