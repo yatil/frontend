@@ -129,12 +129,12 @@ trait ParseCollection extends ExecutionContexts with Logging {
         val id = collectionItem.id
         val headline = collectionItem.headline
         id match {
-          case s if s.startsWith("snap:") => {
+          case snapId if snapId.startsWith("snap:") => {
             for {l <- foldList} yield {
-              headline map (new Snap(s, _)) map (_ +: l) getOrElse l
+              headline map (new Snap(snapId, _)) map (_ +: l) getOrElse l
             }
           }
-          case s => {
+          case _ => {
             val response = ContentApi.item(id, edition).showFields("all").response
             response.onFailure{case t: Throwable => log.warn("%s: %s".format(id, t.toString))}
             for {l <- foldList; itemResponse <- response} yield {
