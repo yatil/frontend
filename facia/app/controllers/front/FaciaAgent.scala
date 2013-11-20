@@ -143,8 +143,7 @@ trait ParseCollection extends ExecutionContexts with Logging {
           }
         }
       }
-      val sorted = results map { _.sortBy(t => collectionItems.indexWhere(_.id == t.id))}
-      sorted
+      results map { _.sortBy(t => collectionItems.indexWhere(_.id == t.id))}
     }
   }
 
