@@ -95,7 +95,13 @@ object Frontend extends Build with Prototypes {
     )
   )
 
-  val commercial = application("commercial").dependsOn(commonWithTests).aggregate(common)
+  val commercial = application("commercial").dependsOn(commonWithTests).aggregate(common).settings(
+    libraryDependencies ++= Seq(
+      "com.google.api-ads" % "ads-lib" % "1.22.0",
+      "com.google.api-ads" % "dfp-axis" % "1.22.0",
+      "com.google.http-client" % "google-http-client-jackson2" % "1.17.0-rc"
+    )
+  )
 
   val onward = application("onward").dependsOn(commonWithTests).aggregate(common)
 
