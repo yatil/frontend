@@ -2,7 +2,7 @@ package model.commercial.dfp
 
 import com.google.api.ads.dfp.axis.v201311._
 import com.google.api.ads.dfp.axis.utils.v201311.StatementBuilder
-import java.util.Random
+import scala.Array
 
 object DfpService {
 
@@ -52,52 +52,58 @@ object DfpService {
     }
   }
 
-  private def insertCommercialGroups(orderId: Long, commercialGroups: Seq[CommercialGroup]) {
-    println("Inserting " + commercialGroups)
-
-    val creativeIds = insertCreatives()
+  private def insertCommercialGroups(orderId: Long, groups: Seq[CommercialGroup]) {
+    println("Inserting " + groups)
 
     val lineItems = lineItemService.createLineItems {
-      commercialGroups.map(group => LineItem(orderId, group)).toArray
+      groups.map(group => LineItem(orderId, group)).toArray
     }
     for (lineItem <- lineItems) {
-      println(s"Inserted line item ${lineItem.getId}: ${lineItem.getName}")
+      println(s"Created line item ${lineItem.getId}: ${lineItem.getName}")
     }
 
-    setLineItemCreatives(lineItems(0).getId, creativeIds)
+    for (group <- groups) {
+      val creativeIds = insertCreatives(group)
+      setLineItemCreatives(lineItems(0).getId, creativeIds)
+    }
   }
 
-  private def updateCommercialGroups(commercialGroups: Seq[CommercialGroup]) {
+  private def updateCommercialGroups(groups: Seq[CommercialGroup]) {
     // TODO
-    println("Updating " + commercialGroups)
+    println("Updating " + groups)
   }
 
-  private def archiveCommercialGroups(commercialGroups: Seq[CommercialGroup]) {
-    println("Archiving " + commercialGroups)
+  private def archiveCommercialGroups(groups: Seq[CommercialGroup]) {
+    println("Archiving " + groups)
 
     val action = new ArchiveLineItems()
     // TODO: include orderId
-    val titles = commercialGroups.map(_.title).mkString("'", "', '", "'")
+    val titles = groups.map(_.title).mkString("'", "', '", "'")
     val statement = new StatementBuilder().where(s"name in ($titles)").toStatement
     val updateResult = lineItemService.performLineItemAction(action, statement)
     println(s"Archived ${updateResult.getNumChanges} line items")
   }
 
-  private def insertCreatives(): Seq[Long] = {
-    val customCreative = new CustomCreative
-    customCreative.setName("Custom creative #" + new Random().nextInt(Integer.MAX_VALUE))
-    customCreative.setSize(new Size(300, 250, false))
-    customCreative.setAdvertiserId(advertiserId)
-    customCreative.setDestinationUrl("http://google.com")
-    customCreative.setHtmlSnippet("<a href='%%CLICK_URL_UNESC%%%%DEST_URL%%'>" + "<img src='something'/>" + "</a><br>Click above for great deals!")
+  private def insertCreatives(group: CommercialGroup): Seq[Long] = {
 
-    val creatives = creativeService.createCreatives(Array(customCreative))
+    val toInsert = group.htmlSnippets.foldLeft(Array[Creative]()) {
+      (acc, snippet) =>
+        val creative = new CustomCreative
+        creative.setName(s"${group.title} #${acc.size + 1}")
+        creative.setSize(new Size(300, 250, false))
+        creative.setAdvertiserId(advertiserId)
+        creative.setDestinationUrl(group.destinationUrl)
+        creative.setHtmlSnippet(snippet)
+        acc :+ creative
+    }
 
-    for (creative <- creatives) {
+    val inserted = creativeService.createCreatives(toInsert)
+
+    for (creative <- inserted) {
       println(s"Created creative ${creative.getId}: ${creative.getName}, preview URL [${creative.getPreviewUrl}]")
     }
 
-    creatives.map(_.getId.toLong).toSeq
+    inserted.map(_.getId.toLong).toSeq
   }
 
   private def deleteCreative() {

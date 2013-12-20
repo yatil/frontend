@@ -7,11 +7,13 @@ object CommercialGroup {
 
   def apply(lineItem: LineItem): CommercialGroup = CommercialGroup(
     title = lineItem.getName,
-    target = Target(lineItem.getTargeting)
+    target = Target(lineItem.getTargeting),
+    htmlSnippets = Nil,
+    destinationUrl = ""
   )
 }
 
-case class CommercialGroup(title: String, target: Target)
+case class CommercialGroup(title: String, target: Target, htmlSnippets: Seq[String], destinationUrl: String)
 
 
 object Target {
