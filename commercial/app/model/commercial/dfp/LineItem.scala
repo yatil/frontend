@@ -9,7 +9,7 @@ object LineItem {
   val networkService = dfpServices.get(session, classOf[NetworkServiceInterface])
   val targetingService = dfpServices.get(session, classOf[CustomTargetingServiceInterface])
 
-  def apply(commercialGroup: CommercialGroup): LineItem = {
+  def apply(orderId: Long, commercialGroup: CommercialGroup): LineItem = {
 
     val targeting = {
       val rootAdUnitId = networkService.getCurrentNetwork.getEffectiveRootAdUnitId
@@ -76,32 +76,28 @@ object LineItem {
       targeting
     }
 
-    def fillRequiredProperties(lineItem: LineItem): LineItem = {
-      lineItem.setLineItemType(LineItemType.SPONSORSHIP)
-      lineItem.setOrderId(commercialGroup.orderId)
-      lineItem.setName(commercialGroup.title)
-
-      lineItem.setStartDateTimeType(StartDateTimeType.IMMEDIATELY)
-      lineItem.setEndDateTime(DateTimes.toDateTime(Instant.now().plus(Duration.standardDays(30L)), "America/New_York"))
-
-      lineItem.setTargeting(targeting)
-
-      lineItem.setCostPerUnit(new Money("GBP", 2000000L))
-      lineItem.setCostType(CostType.CPM)
-      lineItem.setUnitsBought(1)
-
-      val size = new Size()
-      size.setWidth(300)
-      size.setHeight(250)
-      size.setIsAspectRatio(false)
-      val creativePlaceholder = new CreativePlaceholder()
-      creativePlaceholder.setSize(size)
-      lineItem.setCreativePlaceholders(Array(creativePlaceholder))
-
-      lineItem
-    }
-
     val lineItem = new LineItem()
-    fillRequiredProperties(lineItem)
+    lineItem.setLineItemType(LineItemType.SPONSORSHIP)
+    lineItem.setOrderId(orderId)
+    lineItem.setName(commercialGroup.title)
+
+    lineItem.setStartDateTimeType(StartDateTimeType.IMMEDIATELY)
+    lineItem.setEndDateTime(DateTimes.toDateTime(Instant.now().plus(Duration.standardDays(30L)), "America/New_York"))
+
+    lineItem.setTargeting(targeting)
+
+    lineItem.setCostPerUnit(new Money("GBP", 2000000L))
+    lineItem.setCostType(CostType.CPM)
+    lineItem.setUnitsBought(1)
+
+    val size = new Size()
+    size.setWidth(300)
+    size.setHeight(250)
+    size.setIsAspectRatio(false)
+    val creativePlaceholder = new CreativePlaceholder()
+    creativePlaceholder.setSize(size)
+    lineItem.setCreativePlaceholders(Array(creativePlaceholder))
+
+    lineItem
   }
 }

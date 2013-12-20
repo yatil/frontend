@@ -2,29 +2,33 @@ package model.commercial.dfp
 
 import com.google.api.ads.dfp.axis.v201311._
 import com.google.api.ads.dfp.axis.utils.v201311.StatementBuilder
-import common.Logging
 
-object DfpService extends Logging {
+object DfpService {
 
   val lineItemService = dfpServices.get(session, classOf[LineItemServiceInterface])
 
   def syncCommercialGroups(orderId: Long, commercialGroups: Seq[CommercialGroup]) {
-    val inDfp = DfpService.fetchCommercialGroups(orderId)
+
+    def isInGivenGroups(group: CommercialGroupWithArchivalStatus) = {
+      commercialGroups.contains(group.commercialGroup)
+    }
+
+    val inDfp = DfpService.fetchCommercialGroupsWithArchivalStatus(orderId)
 
     val toInsert = commercialGroups filterNot (group => inDfp.map(_.title).contains(group.title))
-    if (!toInsert.isEmpty) insertCommercialGroups(toInsert)
+    if (!toInsert.isEmpty) insertCommercialGroups(orderId, toInsert)
 
     val toUpdate = {
       val common = inDfp filter (group => commercialGroups.map(_.title).contains(group.title))
-      common filterNot (group => commercialGroups.contains(group))
+      common filterNot isInGivenGroups
     }
-    if (!toUpdate.isEmpty) updateCommercialGroups(toUpdate)
+    if (!toUpdate.isEmpty) updateCommercialGroups(toUpdate.map(_.commercialGroup))
 
-    val toArchive = inDfp filterNot (group => commercialGroups.contains(group))
-    if (!toArchive.isEmpty) archiveCommercialGroups(toArchive)
+    val toArchive = inDfp filterNot (group => isInGivenGroups(group) && !group.isArchived)
+    if (!toArchive.isEmpty) archiveCommercialGroups(toArchive.map(_.commercialGroup))
   }
 
-  def fetchCommercialGroups(orderId: Long): Seq[CommercialGroup] = {
+  def fetchCommercialGroupsWithArchivalStatus(orderId: Long): Seq[CommercialGroupWithArchivalStatus] = {
     val statement = new StatementBuilder()
       .where("orderId = :orderId")
       .withBindVariableValue("orderId", orderId)
@@ -36,17 +40,21 @@ object DfpService extends Logging {
       _.toSeq
     }.getOrElse(Nil)
 
-    lineItems.filterNot(_.getIsArchived).map(CommercialGroup(_))
+    lineItems.map {
+      lineItem => CommercialGroupWithArchivalStatus(CommercialGroup(lineItem), lineItem.getIsArchived)
+    }
   }
 
-  def insertCommercialGroups(commercialGroups: Seq[CommercialGroup]) {
-    log.info("Inserting " + commercialGroups)
+  def insertCommercialGroups(orderId: Long, commercialGroups: Seq[CommercialGroup]) {
+    println("Inserting " + commercialGroups)
 
-    val lineItems = lineItemService.createLineItems(commercialGroups.map(LineItem(_)).toArray)
+    val lineItems = lineItemService.createLineItems {
+      commercialGroups.map(group => LineItem(orderId, group)).toArray
+    }
 
     lineItems foreach {
       createdLineItem =>
-        log.info(s"Created a line item with ID [${createdLineItem.getId}] and name [${createdLineItem.getName}]")
+        println(s"Created a line item with ID [${createdLineItem.getId}] and name [${createdLineItem.getName}]")
     }
   }
 
@@ -56,13 +64,18 @@ object DfpService extends Logging {
   }
 
   def archiveCommercialGroups(commercialGroups: Seq[CommercialGroup]) {
-    log.info("Archiving " + commercialGroups)
+    println("Archiving " + commercialGroups)
 
     val action = new ArchiveLineItems()
     // TODO: include orderId
     val titles = commercialGroups.map(_.title).mkString("'", "', '", "'")
     val statement = new StatementBuilder().where(s"name in ($titles)").toStatement
     val updateResult = lineItemService.performLineItemAction(action, statement)
-    log.info(s"Archived ${updateResult.getNumChanges} line items")
+    println(s"Archived ${updateResult.getNumChanges} line items")
   }
+}
+
+
+case class CommercialGroupWithArchivalStatus(commercialGroup: CommercialGroup, isArchived: Boolean) {
+  val title = commercialGroup.title
 }

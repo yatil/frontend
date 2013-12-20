@@ -7,14 +7,13 @@ object CommercialGroup {
 
   def apply(lineItem: LineItem): CommercialGroup = {
     CommercialGroup(
-      orderId = lineItem.getOrderId,
       title = lineItem.getName,
       target = Target(lineItem.getTargeting)
     )
   }
 }
 
-case class CommercialGroup(orderId: Long, title: String, target: Target)
+case class CommercialGroup(title: String, target: Target)
 
 
 object Target {

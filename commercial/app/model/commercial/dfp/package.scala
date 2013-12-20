@@ -7,9 +7,8 @@ import com.google.api.ads.dfp.axis.factory.DfpServices
 
 package object dfp {
 
-  val networkId = "59739193"
-
-  val orderId = 156599313
+  val travelOffersOrderId = 156599313
+  val jobsOrderId = 157775673
 
   val sectionKeyId = 363393L
   val keywordKeyId = 363513L
@@ -24,7 +23,6 @@ package object dfp {
     .fromFile()
     .withOAuth2Credential(oAuth2Credential)
     .build()
-  session.setNetworkCode(networkId)
 
   val dfpServices = new DfpServices()
 }
