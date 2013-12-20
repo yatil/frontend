@@ -5,12 +5,10 @@ import com.google.api.ads.dfp.axis.utils.v201311.StatementBuilder
 
 object CommercialGroup {
 
-  def apply(lineItem: LineItem): CommercialGroup = {
-    CommercialGroup(
-      title = lineItem.getName,
-      target = Target(lineItem.getTargeting)
-    )
-  }
+  def apply(lineItem: LineItem): CommercialGroup = CommercialGroup(
+    title = lineItem.getName,
+    target = Target(lineItem.getTargeting)
+  )
 }
 
 case class CommercialGroup(title: String, target: Target)

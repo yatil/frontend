@@ -4,13 +4,14 @@ package model.commercial.dfp
 object DfpServiceClient extends App {
 
   val travelOfferGroups = Seq(
-    CommercialGroup("traveloffer-spain", Target("travel", Some("spain"))),
-    CommercialGroup("traveloffer-portugal", Target("travel", Some("portugal")))
+    CommercialGroup("spain", Target("travel", Some("spain"))),
+    CommercialGroup("portugal", Target("travel", Some("portugal")))
   )
 
   val jobGroups = Seq(
-    CommercialGroup("job-spain", Target("business", Some("legal"))),
-    CommercialGroup("job-portugal", Target("business", Some("media")))
+    CommercialGroup("theologian", Target("business", Some("legal"))),
+    CommercialGroup("farmer", Target("business", Some("media"))),
+    CommercialGroup("consultant", Target("business", Some("arts")))
   )
 
   DfpService.syncCommercialGroups(travelOffersOrderId, travelOfferGroups)

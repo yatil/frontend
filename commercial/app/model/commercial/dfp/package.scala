@@ -7,6 +7,8 @@ import com.google.api.ads.dfp.axis.factory.DfpServices
 
 package object dfp {
 
+  val advertiserId = 51677553
+
   val travelOffersOrderId = 156599313
   val jobsOrderId = 157775673
 
