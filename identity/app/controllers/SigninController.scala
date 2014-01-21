@@ -39,7 +39,13 @@ class SigninController @Inject()(returnUrlVerifier: ReturnUrlVerifier,
     logger.trace("Rendering signin form")
     val idRequest = idRequestParser(request)
     val filledForm = form.fill("", "", true)
-    Ok(views.html.signin(page, idRequest, idUrlBuilder, filledForm))
+    Ok(views.html.signin(page, generateLoginPageId, idRequest, idUrlBuilder, filledForm))
+  }
+
+
+  def generateLoginPageId: String = {
+    // TODO: Generate uniquie, unpredicatable (verifiable?) loginPageIds
+    math.random.toString
   }
 
   def processForm = Action.async { implicit request =>
@@ -49,7 +55,7 @@ class SigninController @Inject()(returnUrlVerifier: ReturnUrlVerifier,
     def onError(formWithErrors: Form[(String, String, Boolean)]): Future[SimpleResult] = {
       logger.info("Invalid login form submission")
       Future {
-        Ok(views.html.signin(page.signinValidationError(idRequest), idRequest, idUrlBuilder, formWithErrors))
+        Ok(views.html.signin(page.signinValidationError(idRequest), generateLoginPageId, idRequest, idUrlBuilder, formWithErrors))
       }
     }
 
@@ -67,7 +73,7 @@ class SigninController @Inject()(returnUrlVerifier: ReturnUrlVerifier,
                 else error.description
               formFold.withError(error.context.getOrElse(""), errorMessage)
             }
-            Ok(views.html.signin(page.signinAuthenticationError(idRequest), idRequest, idUrlBuilder, formWithErrors))
+            Ok(views.html.signin(page.signinAuthenticationError(idRequest), generateLoginPageId, idRequest, idUrlBuilder, formWithErrors))
           }
           case Right(responseCookies) => {
             logger.trace("Logging user in")

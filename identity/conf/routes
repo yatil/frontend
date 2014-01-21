@@ -22,3 +22,7 @@ GET     /film-awards/complete                           @controllers.FilmAwardsC
 GET     /film-awards/:formReference                     @controllers.FilmAwardsController.filmAwardsForm(formReference: String)
 GET     /form/complete                                  @controllers.FormstackController.complete
 GET     /form/:formReference                            @controllers.FormstackController.formstackForm(formReference: String)
+
+GET     /sesame/auth-feed/:loginPageId    controllers.SesameApplication.authenticationFeed(loginPageId: String)
+POST    /sesame/authorise/:loginPageId     controllers.SesameApplication.authoriseLoginPage(loginPageId: String)
+

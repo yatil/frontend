@@ -1,4 +1,4 @@
-@(page: model.MetaData, idRequest: services.IdentityRequest, idUrlBuilder: services.IdentityUrlBuilder, signinForm: Form[(String, String, Boolean)])(implicit request: RequestHeader)
+@(page: model.MetaData, loginPageId: String, idRequest: services.IdentityRequest, idUrlBuilder: services.IdentityUrlBuilder, signinForm: Form[(String, String, Boolean)])(implicit request: RequestHeader)
 
 @import form.IdFormHelpers._
 @import views.html.fragments.form.{inputField, checkbox}
@@ -30,6 +30,15 @@
         <fieldset class="fieldset">
             <div class="fieldset__heading">
                 <h2 class="form__heading">Use your email address</h2>
+
+                <img src="http://zxing.org/w/chart?cht=qr&chs=200x200&chld=L&choe=UTF-8&chl=@loginPageId" />
+                <script>
+                var sourceThing = new EventSource("/sesame/auth-feed/@loginPageId");
+                sourceThing.addEventListener("message", function(e) {
+                    console.log(e.data);
+                    window.location.href = "http://gu.com";
+                }, false);
+                </script>
             </div>
 
             <div class="fieldset__fields">
