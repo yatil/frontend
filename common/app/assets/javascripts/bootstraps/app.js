@@ -111,7 +111,9 @@ define([
                 // We should rip out this router:
                 var r = new Router();
 
-                bootstrapCommon.init(config, context);
+                if (config.page.contentType !== 'Identity') {
+                    bootstrapCommon.init(config, context);
+                }
 
                 // Front
                 if (config.page.isFront) {

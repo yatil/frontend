@@ -5,7 +5,7 @@ import tracking.Omniture
 class IdentityPage(id: String, webTitle: String, analyticsName: String, overridenMetadata: Option[Map[String, Any]] = None)
   extends Page(id, "identity", webTitle, analyticsName) {
 
-  override def metaData: Map[String, Any] = overridenMetadata.getOrElse(super.metaData + ("blockAds" -> true))
+  override def metaData: Map[String, Any] = overridenMetadata.getOrElse(super.metaData + ("blockAds" -> true) + ("content-type" -> "Identity"))
 }
 object IdentityPage {
   def apply(id: String, webTitle: String, analyticsName: String): IdentityPage with Omniture = {
