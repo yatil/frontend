@@ -6,7 +6,8 @@ define([
 
     //Current tests
     'common/modules/experiments/tests/aa',
-    'common/modules/experiments/tests/gravity-recommendations'
+    'common/modules/experiments/tests/gravity-recommendations',
+    'common/modules/experiments/tests/inbodylinks-newtab'
 ], function (
     common,
     store,
@@ -14,12 +15,14 @@ define([
     mvtCookie,
 
     Aa,
-    GravityRecommendations
+    GravityRecommendations,
+    InBodyLinksNewTab
     ) {
 
     var TESTS = [
             new Aa(),
-            new GravityRecommendations()
+            new GravityRecommendations(),
+            new InBodyLinksNewTab()
        ],
         participationsKey = 'gu.ab.participations';
 

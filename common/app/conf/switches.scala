@@ -296,9 +296,14 @@ object Switches extends Collections {
     safeState = Off, sellByDate = new DateMidnight(2014, 2, 24)
   )
 
+  val ABInBodyLinksNewTab = Switch("A/B Tests", "ab-inbodylinks-newtab",
+    "Enables opening external in body links in a new tab on desktop",
+    safeState = Off, sellByDate = new DateMidnight(2014, 2, 28)
+  )
+
   val TagLinking = Switch("Feature Switches", "tag-linking",
     "If this is switched on articles that have no in body links will auto link to their tags where possible",
-    safeState = Off, sellByDate = endOfQ4 
+    safeState = Off, sellByDate = endOfQ4
   )
 
   // Sport Switch
@@ -395,6 +400,7 @@ object Switches extends Collections {
     IdentityFilmAwardsSwitch,
     ABAa,
     ABGravityRecommendations,
+    ABInBodyLinksNewTab,
     NetworkFrontUkAlpha,
     NetworkFrontUsAlpha,
     NetworkFrontAuAlpha,
