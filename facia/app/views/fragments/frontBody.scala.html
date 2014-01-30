@@ -6,6 +6,7 @@
             @GetContainer(faciaTrailblock.id, block._1) match {
                 case style: NewsContainer       => { @containers.news(block._1,  block._2, style, index) }
                 case style: SportContainer      => { @containers.sport(front, block._1, block._2, style, index) }
+                case style: CommentV2Container  => { @containers.commentv2(block._1, block._2, style, index) }
                 case style: CommentContainer    => { @containers.comment(block._1, block._2, style, index) }
                 case style: FeaturesContainer   => { @containers.features(block._1, block._2, style, index) }
                 case style: PopularContainer    => { @containers.popular(block._1, block._2, style, index) }

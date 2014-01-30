@@ -21,7 +21,7 @@ object GetContainer {
       ("au/news/regular-stories", NewsContainer()),
       ("au/sport/regular-stories", SportContainer()),
       ("au/tone/features/feature-stories", FeaturesContainer()),
-      ("au/commentisfree/regular-stories", CommentContainer()),
+      ("au/commentisfree/regular-stories", CommentV2Container()),
       ("au/culture/regular-stories", FeaturesContainer()),
       ("au/contributors/feature-stories", CommentContainer()),
       ("au/most-viewed/regular-stories", PopularContainer())
@@ -30,7 +30,7 @@ object GetContainer {
       ("au-alpha/news/regular-stories", NewsContainer()),
       ("au-alpha/features/feature-stories", FeaturesContainer()),
       ("au-alpha/special/special-story", SportContainer()),
-      ("au-alpha/contributors/feature-stories", CommentContainer()),
+      ("au-alpha/contributors/feature-stories", CommentV2Container()),
       ("au-alpha/people-in-the-news/feature-stories", SportContainer()),
       ("au-alpha/special-other/special-story", SportContainer()),
       ("au/most-viewed/regular-stories", PopularContainer())
@@ -40,7 +40,7 @@ object GetContainer {
       ("au/business/most-viewed/regular-stories", PopularContainer())
     )),
     ("au/commentisfree", Map(
-      ("au/commentisfree/regular-stories", CommentContainer(showMore = false)),
+      ("au/commentisfree/regular-stories", CommentV2Container(showMore = false)),
       ("au/commentisfree/most-viewed/regular-stories", PopularContainer())
     )),
     ("au/culture", Map(
@@ -59,16 +59,16 @@ object GetContainer {
       ("uk/news/regular-stories", NewsContainer()),
       ("uk/sport/regular-stories", SportContainer()),
       ("uk/tone/features/feature-stories", FeaturesContainer()),
-      ("uk/commentisfree/regular-stories", CommentContainer()),
+      ("uk/commentisfree/regular-stories", CommentV2Container()),
       ("uk/culture/regular-stories", FeaturesContainer()),
-      ("uk/contributors/feature-stories", CommentContainer()),
+      ("uk/contributors/feature-stories", CommentV2Container()),
       ("uk/most-viewed/regular-stories", PopularContainer())
     )),
     ("uk-alpha", Map(
       ("uk-alpha/news/regular-stories", NewsContainer()),
       ("uk-alpha/features/feature-stories", FeaturesContainer()),
       ("uk-alpha/special/special-story", SportContainer()),
-      ("uk-alpha/contributors/feature-stories", CommentContainer()),
+      ("uk-alpha/contributors/feature-stories", CommentV2Container()),
       ("uk-alpha/people-in-the-news/feature-stories", SportContainer()),
       ("uk-alpha/special-other/special-story", SportContainer()),
       ("uk/most-viewed/regular-stories", PopularContainer())
@@ -78,7 +78,7 @@ object GetContainer {
       ("uk/business/most-viewed/regular-stories", PopularContainer())
     )),
     ("uk/commentisfree", Map(
-      ("uk/commentisfree/regular-stories", CommentContainer(showMore = false)),
+      ("uk/commentisfree/regular-stories", CommentV2Container(showMore = false)),
       ("uk/commentisfree/most-viewed/regular-stories", PopularContainer())
     )),
     ("uk/culture", Map(
@@ -97,16 +97,16 @@ object GetContainer {
       ("us/news/regular-stories", NewsContainer()),
       ("us/sport/regular-stories", SportContainer()),
       ("us/tone/features/feature-stories", FeaturesContainer()),
-      ("us/commentisfree/regular-stories", CommentContainer()),
+      ("us/commentisfree/regular-stories", CommentV2Container()),
       ("us/culture/regular-stories", FeaturesContainer()),
-      ("us/contributors/feature-stories", CommentContainer()),
+      ("us/contributors/feature-stories", CommentV2Container()),
       ("us/most-viewed/regular-stories", PopularContainer())
     )),
     ("us-alpha", Map(
       ("us-alpha/news/regular-stories", NewsContainer()),
       ("us-alpha/features/feature-stories", FeaturesContainer()),
       ("us-alpha/special/special-story", SportContainer()),
-      ("us-alpha/contributors/feature-stories", CommentContainer()),
+      ("us-alpha/contributors/feature-stories", CommentV2Container()),
       ("us-alpha/people-in-the-news/feature-stories", SportContainer()),
       ("us-alpha/special-other/special-story", SportContainer()),
       ("us/most-viewed/regular-stories", PopularContainer())
@@ -116,7 +116,7 @@ object GetContainer {
       ("us/business/most-viewed/regular-stories", PopularContainer())
     )),
     ("us/commentisfree", Map(
-      ("us/commentisfree/regular-stories", CommentContainer(showMore = false)),
+      ("us/commentisfree/regular-stories", CommentV2Container(showMore = false)),
       ("us/commentisfree/most-viewed/regular-stories", PopularContainer())
     )),
     ("us/culture", Map(
