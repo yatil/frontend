@@ -2,7 +2,7 @@
 @import conf.Switches._
 
 @defining((model.article, model.storyPackage)) { case (article, storyPackage) =>
-    
+
     @if(article.isSponsored) {
         @fragments.sponsored()
     }
