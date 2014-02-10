@@ -20,7 +20,7 @@
 
         <div class="item__container">
 
-            <a href="@LinkTo{@trail.url}" class="item__link tone-accent-border" data-link-name="article">
+            <a href="@LinkTo(trail)" class="item__link tone-accent-border" data-link-name="article">
                 @if(trail.imageAdjust != Some("hide")) {
                     @trail.trailPicture(5,3).map{ imageContainer =>
                         @ImgSrc.imager(imageContainer, Item620).map { imgSrc =>
@@ -69,7 +69,7 @@
                                        item__support__item
                                        item__support__item--@VisualTone(supporting)
                                        @if(supporting.isLive){item__support__item--live}">
-                                <a href="@LinkTo{@supporting.url}"
+                                <a href="@LinkTo(supporting)"
                                    class="item__support__action
                                           linkslist__action">
                                     @supporting.headline

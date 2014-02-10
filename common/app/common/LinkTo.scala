@@ -3,7 +3,7 @@ package common
 import play.api.templates.Html
 import play.api.mvc.{SimpleResult, AnyContent, Request, RequestHeader}
 import conf.Configuration
-import model.MetaData
+import model.{Content, Trail, MetaData}
 import org.jsoup.Jsoup
 import scala.collection.JavaConversions._
 
@@ -20,6 +20,10 @@ trait LinkTo extends Logging {
   def apply(html: Html)(implicit request: RequestHeader): String = this(html.toString(), Edition(request))
   def apply(link: String)(implicit request: RequestHeader): String = this(link, Edition(request))
 
+  def apply(trail: Trail)(implicit request: RequestHeader): String = trail match {
+    case content: Content => this(content.id, Edition(request))
+    case _ => this(trail.url, Edition(request))
+  }
   def apply(url: String, edition: Edition): String = (url match {
     case "http://www.theguardian.com" => urlFor("", edition)
     case "/" => urlFor("", edition)

@@ -2,7 +2,7 @@
 
 <span class="headline-list__count">@rowNum</span>
 <div class="headline-list__body">
-    <a href="@LinkTo{@trail.url}" data-link-name="Top stories:link text:item @rowNum">
+    <a href="@LinkTo(trail)" data-link-name="Top stories:link text:item @rowNum">
         @RemoveOuterParaHtml(trail.linkText)
     </a>
 </div>

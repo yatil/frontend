@@ -4,10 +4,18 @@ import org.scalatest.FlatSpec
 import org.scalatest.Matchers
 import play.api.Play
 import common.editions.Uk
+import views.support.TestTrail
+import play.api.test.FakeRequest
+import play.api.mvc.RequestHeader
+import model.{ApiContentWithMeta, Content}
+import com.gu.openplatform.contentapi.model.{Content => ApiContent}
+import org.joda.time.DateTime
 
 class LinkToTest extends FlatSpec with Matchers {
 
   Play.unsafeApplication
+
+  implicit val fakeRequest: RequestHeader = FakeRequest()
 
   implicit val edition = Uk
 
@@ -38,6 +46,17 @@ class LinkToTest extends FlatSpec with Matchers {
 
   it should "strip leading and trailing whitespace" in {
     TestLinkTo("  http://www.foo.com/uk   ", edition) should be ("http://www.foo.com/uk")
+  }
+
+  it should "give correct url based on trail" in {
+    val testTrail = TestTrail("/media/2014/feb/07/much-doge")
+    TestLinkTo(testTrail) should be ("http://www.foo.com/media/2014/feb/07/much-doge")
+  }
+
+  it should "give correct url based on content" in {
+    val testContent = ApiContent("/media/2014/feb/07/much-doge", None, None, DateTime.now, "", "", "", elements=None)
+    val content = Content(ApiContentWithMeta(testContent))
+    TestLinkTo(content) should be ("http://www.foo.com/media/2014/feb/07/much-doge")
   }
 
 }
