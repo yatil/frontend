@@ -100,7 +100,9 @@ trait FootballTestData {
     println(s"||| loading test data, status: ${Competitions().matches} |||")
     if (Competitions().matches.isEmpty) {
       Competitions.competitionAgents.foreach { agent =>
+        println(s"||| loading agents, agent for: ${agent.competition.id} |||")
         competitions.filter(_.id == agent.competition.id).map { comp =>
+          println(s"||| loading test data, comp found: ${comp.id} |||")
           agent.update(comp)
           agent.addMatches(comp.matches)
         }
