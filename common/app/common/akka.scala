@@ -17,7 +17,7 @@ trait ExecutionContexts {
     }
   }
 
-  implicit lazy val executionContext = {
+  implicit def executionContext = {
     Try(play.Play.isTest) match {
       case Success(true) => currentThreadContext
       case _ => play.api.libs.concurrent.Execution.Implicits.defaultContext
