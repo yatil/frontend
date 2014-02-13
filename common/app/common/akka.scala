@@ -4,9 +4,25 @@ import akka.agent.Agent
 import play.api.libs.concurrent.{Akka => PlayAkka}
 import scala.concurrent.duration._
 import play.api.Play
+import scala.concurrent.ExecutionContext
+import scala.util.{Success, Try}
 
 trait ExecutionContexts {
-  implicit lazy val executionContext = play.api.libs.concurrent.Execution.Implicits.defaultContext
+  private lazy val currentThreadContext = new ExecutionContext {
+    def execute(runnable: Runnable) {
+      runnable.run()
+    }
+    def reportFailure(t: Throwable) {
+      ExecutionContext.defaultReporter(t)
+    }
+  }
+
+  implicit lazy val executionContext = {
+    Try(play.Play.isTest) match {
+      case Success(true) => currentThreadContext
+      case _ => play.api.libs.concurrent.Execution.Implicits.defaultContext
+    }
+  }
 }
 
 object AkkaAgent {
