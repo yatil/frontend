@@ -76,6 +76,7 @@ class FeedStubPlugin(val app: play.api.Application) extends Plugin with Executio
 
 class StubFootballStatsPlugin(app: PlayApplication) extends Plugin with FootballTestData {
   override def onStart() {
+    println("||| starting stub football stats plugin |||")
     FootballClient.http = TestHttp
     loadTestData()
   }
