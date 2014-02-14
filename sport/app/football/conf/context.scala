@@ -64,6 +64,7 @@ class FootballStatsPlugin(app: PlayApp) extends Plugin {
   }
 
   override def onStart() {
+    println("*** starting non-stub football stats plugin ***")
     descheduleJobs()
     scheduleJobs()
   }
