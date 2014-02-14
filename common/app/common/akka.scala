@@ -17,12 +17,7 @@ trait ExecutionContexts {
     }
   }
 
-  implicit def executionContext = {
-    Try(play.Play.isTest) match {
-      case Success(true) => currentThreadContext
-      case _ => play.api.libs.concurrent.Execution.Implicits.defaultContext
-    }
-  }
+  implicit def executionContext = currentThreadContext
 }
 
 object AkkaAgent {
